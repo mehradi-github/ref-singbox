@@ -10,5 +10,17 @@ Ansible automates the management of remote systems and controls their desired st
 
 ## Linux Server Installation
 
+-k, --ask-pass: ask for connection password
+-K, --ask-become-pass: ask for privilege escalation password
+
+```sh
+ansible-playbook ./install-playbook.yaml -t servers 
+
+```
+
 ## Linux Client Installation
+```sh
+ansible-playbook ./install-playbook.yaml -t clients
+
+```
 
