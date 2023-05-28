@@ -1,0 +1,17 @@
+---
+- name: Installing sing-box on server
+  hosts: servers
+  gather_facts: true
+  become: true
+  roles:
+  - server-sing-box
+  tags:
+  - server
+- name: Installing sing-box on client
+  hosts: clients
+  gather_facts: true
+  become: true
+  roles:
+  - client-sing-box
+  tags:
+  - client

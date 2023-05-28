@@ -1,0 +1,6 @@
+---
+# tasks file for client-sing-box
+- name: Updating repos
+  ansible.builtin.apt:
+    name: "*"
+    state: latest
