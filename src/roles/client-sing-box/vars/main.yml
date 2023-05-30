@@ -3,4 +3,4 @@
 xray_path: /usr/local/bin/xray
 xray_core_ver: v1.8.1
 xray_core_zip: Xray-linux-64.zip
-xray_core_url: https://github.com/XTLS/Xray-core/releases/download/{{xray_core_ver}}/{{xray_core_zip}}
+xray_core_url: 'https://github.com/XTLS/Xray-core/releases/download/{{ xray_core_ver }}/{{ xray_core_zip }}'
