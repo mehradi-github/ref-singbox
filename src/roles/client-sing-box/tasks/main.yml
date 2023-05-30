@@ -1,17 +1,16 @@
 # tasks file for client-sing-box
----
-- name: Create a directory if it does not exist
-  ansible.builtin.file:
-    path: '{{ xray_path }}'
-    state: directory
-    mode: '0755'
-- name: Downloading Xray-core
-  ansible.builtin.get_url:
-    url: '{{ xray_core_url }}'
-    dest: '{{ xray_path }}/{{ xray_core_zip }}'
+# - name: Create a directory if it does not exist
+#   ansible.builtin.file:
+#     path: '{{ xray_path }}'
+#     state: directory
+#     mode: '0755'
+# - name: Downloading Xray-core
+#   ansible.builtin.get_url:
+#     url: '{{ xray_core_url }}'
+#     dest: '{{ xray_path }}/{{ xray_core_name }}.zip'
 
-# - name: Extracting downloaded xray
-#     ansible.builtin.unarchive:
-#       src: {{xray_core_url}}/{{xray_core_zip}}
-#       dest: {{xray_core_url}}
-#       remote_src: yes
+- name: Extracting downloaded xray
+  ansible.builtin.unarchive:
+    src: https://github.com/XTLS/Xray-core/releases/download/v1.8.1/Xray-linux-64.zip
+    dest: /usr/local/bin/xray
+    remote_src: yes 
