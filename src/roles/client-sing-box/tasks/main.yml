@@ -11,11 +11,15 @@
 
 - name: Extracting downloaded xray
   ansible.builtin.unarchive:
-    src: https://github.com/XTLS/Xray-core/releases/download/v1.8.1/Xray-linux-64.zip
-    dest: /usr/local/bin/xray
+    src: {{ xray_core_url }}
+    dest: {{ xray_path }}
     remote_src: yes 
 - name: Changing mode xray file
   ansible.builtin.file:
     path: '{{ xray_path }}/xray'
     mode: '0755'
-
+- name: Template for config.json
+  ansible.builtin.template:
+    src: config.json.jinja
+    dest: '{{ xray_path }}/config.json'
+    mode: '0644'
