@@ -4,15 +4,10 @@
     path: '{{ xray_path }}'
     state: directory
     mode: '0755'
-# - name: Downloading Xray-core
-#   ansible.builtin.get_url:
-#     url: '{{ xray_core_url }}'
-#     dest: '{{ xray_path }}/{{ xray_core_name }}.zip'
-
 - name: Extracting downloaded xray
   ansible.builtin.unarchive:
-    src: {{ xray_core_url }}
-    dest: {{ xray_path }}
+    src: '{{ xray_core_url }}'
+    dest: '{{ xray_path }}'
     remote_src: yes 
 - name: Changing mode xray file
   ansible.builtin.file:
@@ -23,3 +18,12 @@
     src: config.json.jinja
     dest: '{{ xray_path }}/config.json'
     mode: '0644'
+- name: Template for xray.service
+  ansible.builtin.template:
+    src: xray.service.jinja
+    dest: '/etc/systemd/system/xray.service'
+    mode: '0644'
+- name: Enabling and starting xray.service
+  ansible.builtin.shell: systemctl daemon-reload && systemctl enable --now xray
+  environment: '{{ proxy_env }}'
+
