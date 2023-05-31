@@ -25,5 +25,10 @@
     mode: '0644'
 - name: Enabling and starting xray.service
   ansible.builtin.shell: systemctl daemon-reload && systemctl enable --now xray
-  environment: '{{ proxy_env }}'
-
+- name: Customizing /etc/environment
+  ansible.builtin.lineinfile:
+    dest: "/etc/environment"
+    state: present
+    regexp: "^{{ item.key }}="
+    line: "{{ item.key }}={{ item.value }}"
+  with_items: "{{ os_environment }}"

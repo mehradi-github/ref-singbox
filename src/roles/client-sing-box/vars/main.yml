@@ -4,17 +4,27 @@ xray_path: /usr/local/bin/xray
 xray_core_ver: v1.8.1
 xray_core_name: Xray-linux-64
 xray_core_url: 'https://github.com/XTLS/Xray-core/releases/download/{{ xray_core_ver }}/{{ xray_core_name }}.zip'
-proxy_env:
-  no_proxy: localhost,127.0.0.0/8,::1
-  ftp_proxy: http://127.0.0.1:8889/
-  https_proxy: http://127.0.0.1:8889/
-  NO_PROXY: localhost,127.0.0.0/8,::1
-  FTP_PROXY: http://127.0.0.1:8889/
-  HTTPS_PROXY: http://127.0.0.1:8889/
-  HTTP_PROXY: http://127.0.0.1:8889/
-  http_proxy: http://127.0.0.1:8889/
-  ALL_PROXY: socks5://127.0.0.1:1089/
-  all_proxy: socks5://127.0.0.1:1089/
+os_environment :
+  - key: no_proxy
+    value: localhost,127.0.0.0/8,::1
+  - key: ftp_proxy
+    value: http://127.0.0.1:8889/
+  - key: https_proxy
+    value: http://127.0.0.1:8889/
+  - key: NO_PROXY
+    value: localhost,127.0.0.0/8,::1
+  - key: FTP_PROXY
+    value: http://127.0.0.1:8889/
+  - key: HTTPS_PROXY
+    value: http://127.0.0.1:8889/
+  - key: HTTP_PROXY
+    value: http://127.0.0.1:8889/
+  - key: http_proxy
+    value: http://127.0.0.1:8889/
+  - key: ALL_PROXY
+    value: socks5://127.0.0.1:1089/
+  - key: all_proxy
+    value: socks5://127.0.0.1:1089/
 server_ipv4: 'a'
 uuid: 'b'
 server_name: 'c'
