@@ -1,2 +1,36 @@
 ---
 # tasks file for server-sing-box
+# tasks file for client-sing-box
+- name: Creating singbox directory if it does not exist
+  ansible.builtin.file:
+    path: '{{ singbox_path }}'
+    state: directory
+    mode: '0755'
+- name: Extracting downloaded singbox
+  ansible.builtin.unarchive:
+    src: '{{ singbox_core_url }}'
+    dest: '{{ singbox_path }}'
+    remote_src: yes 
+- name: Changing mode singbox file
+  ansible.builtin.file:
+    path: '{{ singbox_path }}/singbox'
+    mode: '0755'
+- name: Template for config.json
+  ansible.builtin.template:
+    src: config.json.jinja
+    dest: '{{ singbox_path }}/config.json'
+    mode: '0644'
+- name: Template for singbox.service
+  ansible.builtin.template:
+    src: singbox.service.jinja
+    dest: '/etc/systemd/system/singbox.service'
+    mode: '0644'
+- name: Enabling and starting singbox.service
+  ansible.builtin.shell: systemctl daemon-reload && systemctl enable --now singbox
+- name: Customizing /etc/environment
+  ansible.builtin.lineinfile:
+    dest: "/etc/environment"
+    state: present
+    regexp: "^{{ item.key }}="
+    line: "{{ item.key }}={{ item.value }}"
+  with_items: "{{ os_environment }}"
