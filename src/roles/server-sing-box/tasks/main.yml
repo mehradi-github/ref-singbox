@@ -26,7 +26,10 @@
   register: key_pair
 - name: Return UUID to registered var
   ansible.builtin.command: '{{ singbox_path }}/singbox generate uuid'
-  register: uuid    
+  register: uuid   
+- name: Return short id to registered var
+  ansible.builtin.command: '{{ singbox_path }}/singbox generate rand --hex 8'
+  register: short_id    
 - name: Template for singbox.service
   ansible.builtin.template:
     src: singbox.service.jinja
