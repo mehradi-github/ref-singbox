@@ -1,5 +1,13 @@
 ---
 # tasks file for server-sing-box
+- name: Update apt repo and cache on all Debian/Ubuntu boxes
+  apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+- name: Upgrade all packages on servers
+  apt: upgrade=dist force_apt_get=yes
+- name: Install jq
+  ansible.builtin.package:
+    name: jq
+    state: present
 - name: Creating singbox directory if it does not exist
   ansible.builtin.file:
     path: '{{ singbox_path }}'
