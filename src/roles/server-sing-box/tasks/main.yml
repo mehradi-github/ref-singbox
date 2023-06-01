@@ -23,7 +23,10 @@
     mode: '0644'
 - name: Return key pair to registered var
   ansible.builtin.command: '{{ singbox_path }}/singbox generate reality-keypair'
-  register: key_pair 
+  register: key_pair
+- name: Return UUID to registered var
+  ansible.builtin.command: '{{ singbox_path }}/singbox generate uuid'
+  register: uuid    
 - name: Template for singbox.service
   ansible.builtin.template:
     src: singbox.service.jinja
