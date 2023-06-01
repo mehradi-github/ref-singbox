@@ -30,6 +30,9 @@
 - name: Return short id to registered var
   ansible.builtin.command: '{{ singbox_path }}/singbox generate rand --hex 8'
   register: short_id    
+- name: Return server_ipv4 to registered var
+  ansible.builtin.command: 'curl -s https://api.ipify.org'
+  register: server_ipv4   
 - name: Template for singbox.service
   ansible.builtin.template:
     src: singbox.service.jinja

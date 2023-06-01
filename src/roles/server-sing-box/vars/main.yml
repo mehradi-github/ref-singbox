@@ -6,9 +6,5 @@ singbox_path: /usr/local/bin/singbox
 singbox_core_ver: 1.2.7
 singbox_core_name: linux-amd64
 singbox_core_url: 'https://github.com/SagerNet/sing-box/releases/download/v{{ singbox_core_ver }}/sing-box-{{ singbox_core_ver }}/{{ singbox_core_name }}.tar.gz'
-server_ipv4: 'a'
 listen_port: 443
-uuid: 'b'
-server_name: 'c'
-public_key: 'd'
-short_id: 'e'
+server_name: 'telewebion.com'
