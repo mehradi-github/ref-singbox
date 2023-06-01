@@ -1,6 +1,5 @@
 ---
 # tasks file for server-sing-box
-# tasks file for client-sing-box
 - name: Creating singbox directory if it does not exist
   ansible.builtin.file:
     path: '{{ singbox_path }}'
@@ -22,6 +21,9 @@
     src: reality.json.jinja
     dest: '{{ singbox_path }}/reality.json'
     mode: '0644'
+- name: Return key pair to registered var
+  ansible.builtin.command: '{{ singbox_path }}/singbox generate reality-keypair'
+  register: key_pair 
 - name: Template for singbox.service
   ansible.builtin.template:
     src: singbox.service.jinja
@@ -35,6 +37,7 @@
     - "Server IP: {{ server_ip }}"
     - "Listen Port: {{ listen_port }}"
     - "Server Name: {{ server_name }}"
+    - "Private Key: {{ private_key }}"
     - "Public Key: {{ public_key }}"
     - "Short ID: {{ short_id }}"
     - "UUID: {{ uuid }}"
