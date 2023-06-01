@@ -38,6 +38,12 @@
 - name: Return key pair to registered var
   ansible.builtin.command: '{{ singbox_path }}/singbox generate reality-keypair'
   register: key_pair
+- name: Return private key to registered var
+  ansible.builtin.command: echo {{ key_pair }} | awk "/PrivateKey/ {print $2}" | tr -d '"'
+  register: private_key
+- name: Return public key to registered var
+  ansible.builtin.command: echo {{ key_pair }} | awk "/PublicKey/ {print $2}" | tr -d '"'
+  register: public_key
 - name: Return UUID to registered var
   ansible.builtin.command: '{{ singbox_path }}/singbox generate uuid'
   register: uuid   
