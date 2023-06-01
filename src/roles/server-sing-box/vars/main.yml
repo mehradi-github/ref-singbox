@@ -3,7 +3,6 @@
 ---
 # vars file for client-sing-box
 singbox_path: /usr/local/bin/singbox
-singbox_core_ver: 1.2.7
 singbox_core_name: linux-amd64
 singbox_core_url: 'https://github.com/SagerNet/sing-box/releases/download/v{{ singbox_core_ver }}/sing-box-{{ singbox_core_ver }}/{{ singbox_core_name }}.tar.gz'
 listen_port: 443

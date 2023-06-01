@@ -8,6 +8,9 @@
   ansible.builtin.package:
     name: jq
     state: present
+- name: Fetch the latest (including pre-releases) release version number from GitHub API
+  ansible.builtin.command: 'curl -s "https://api.github.com/repos/SagerNet/sing-box/releases" | jq -r ".[0].name"'
+  register: singbox_core_ver 
 - name: Creating singbox directory if it does not exist
   ansible.builtin.file:
     path: '{{ singbox_path }}'
