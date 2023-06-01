@@ -17,10 +17,10 @@
   ansible.builtin.file:
     path: '{{ singbox_path }}/singbox'
     mode: '0755'
-- name: Template for config.json
+- name: Template for reality.json
   ansible.builtin.template:
-    src: config.json.jinja
-    dest: '{{ singbox_path }}/config.json'
+    src: reality.json.jinja
+    dest: '{{ singbox_path }}/reality.json'
     mode: '0644'
 - name: Template for singbox.service
   ansible.builtin.template:
