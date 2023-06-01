@@ -11,6 +11,9 @@
 - name: Fetch the latest (including pre-releases) release version number from GitHub API
   ansible.builtin.command: 'curl -s "https://api.github.com/repos/SagerNet/sing-box/releases" | jq -r ".[0].name"'
   register: singbox_core_ver 
+- name: Fetch the latest (including pre-releases) release version number from GitHub API
+  ansible.builtin.command: 'curl -s "https://api.github.com/repos/SagerNet/sing-box/releases" | jq -r ".[0].name"'
+  register: singbox_core_ver 
 - name: Creating singbox directory if it does not exist
   ansible.builtin.file:
     path: '{{ singbox_path }}'
@@ -41,9 +44,9 @@
 - name: Return short id to registered var
   ansible.builtin.command: '{{ singbox_path }}/singbox generate rand --hex 8'
   register: short_id    
-- name: Return server_ipv4 to registered var
-  ansible.builtin.command: 'curl -s https://api.ipify.org'
-  register: server_ipv4   
+# - name: Return server_ipv4 to registered var
+#   ansible.builtin.command: 'curl -s https://api.ipify.org'
+#   register: server_ipv4   
 - name: Template for singbox.service
   ansible.builtin.template:
     src: singbox.service.jinja
