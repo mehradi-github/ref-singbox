@@ -11,10 +11,7 @@
     - jq
     state: present
 - name: Fetch the latest (including pre-releases) release version number from GitHub API
-  ansible.builtin.command: 'curl -s "https://api.github.com/repos/SagerNet/sing-box/releases" | jq -r ".[0].name"'
-  register: singbox_core_ver 
-- name: Fetch the latest (including pre-releases) release version number from GitHub API
-  ansible.builtin.command: 'curl -s "https://api.github.com/repos/SagerNet/sing-box/releases" | jq -r ".[0].name"'
+  ansible.builtin.shell: 'curl -s "https://api.github.com/repos/SagerNet/sing-box/releases" | jq -r ".[0].name"'
   register: singbox_core_ver 
 - name: Creating singbox directory if it does not exist
   ansible.builtin.file:
@@ -23,6 +20,9 @@
     owner: root
     group: root
     mode: '0755'
+- name: Print url sinbox download
+  ansible.builtin.debug:  
+    msg: '{{ singbox_core_url }}'
 - name: Extracting downloaded singbox
   ansible.builtin.unarchive:
     src: '{{ singbox_core_url }}'
