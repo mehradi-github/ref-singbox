@@ -4,9 +4,11 @@
   apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
 - name: Upgrade all packages on servers
   apt: upgrade=dist force_apt_get=yes
-- name: Install jq
+- name: Install curl jq
   ansible.builtin.package:
-    name: jq
+    name: 
+    - curl
+    - jq
     state: present
 - name: Fetch the latest (including pre-releases) release version number from GitHub API
   ansible.builtin.command: 'curl -s "https://api.github.com/repos/SagerNet/sing-box/releases" | jq -r ".[0].name"'
