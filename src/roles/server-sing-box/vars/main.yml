@@ -1,6 +1,6 @@
 ---
 # vars file for server-sing-box
-singbox_parent_path: /root
+singbox_parent_path: /usr/local/bin
 singbox_old_path: '{{ singbox_parent_path }}/sing-box-{{ singbox_core_ver.stdout }}-{{ singbox_core_name }}'
 singbox_path: '{{ singbox_parent_path }}/singbox'
 singbox_core_name: linux-amd64
