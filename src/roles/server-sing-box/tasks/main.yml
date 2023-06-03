@@ -46,6 +46,16 @@
 - name: Return short id to registered var
   ansible.builtin.command: '{{ singbox_path }}/singbox generate rand --hex 8'
   register: short_id    
+- name: Print the server details
+  ansible.builtin.debug:
+    msg:
+    - "Server IP: {{ server_ip }}"
+    - "Listen Port: {{ listen_port }}"
+    - "Server Name: {{ server_name }}"
+    - "Private Key: {{ private_key }}"
+    - "Public Key: {{ public_key }}"
+    - "Short ID: {{ short_id }}"
+    - "UUID: {{ uuid }}"  
 # - name: Return server_ipv4 to registered var
 #   ansible.builtin.command: 'curl -s https://api.ipify.org'
 #   register: server_ipv4   
@@ -61,14 +71,5 @@
     mode: '0644'
 - name: Enabling and starting singbox.service
   ansible.builtin.shell: systemctl daemon-reload && systemctl enable --now singbox
-- name: Print the server details
-  ansible.builtin.debug:
-    msg:
-    - "Server IP: {{ server_ip }}"
-    - "Listen Port: {{ listen_port }}"
-    - "Server Name: {{ server_name }}"
-    - "Private Key: {{ private_key }}"
-    - "Public Key: {{ public_key }}"
-    - "Short ID: {{ short_id }}"
-    - "UUID: {{ uuid }}"
+
 
