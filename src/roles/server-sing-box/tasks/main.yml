@@ -50,6 +50,9 @@
   ansible.builtin.file:
     path: '{{ singbox_path }}/sing-box'
     mode: '0755'
+- name: Return server_ipv4 to registered var
+  ansible.builtin.shell: 'curl -s https://api.ipify.org'
+  register: server_ipv4  
 - name: Return key pair to registered var
   ansible.builtin.shell: '{{ singbox_path }}/sing-box generate reality-keypair'
   register: key_pair
@@ -68,16 +71,13 @@
 - name: Print the server details
   ansible.builtin.debug:
     msg:
-    - "Server IP: {{ server_ipv4}}"
+    - "Server IP: {{ server_ipv4.stdout}}"
     - "Listen Port: {{ listen_port }}"
     - "Server Name: {{ server_name }}"
     - "Private Key: {{ private_key.stdout }}"
     - "Public Key: {{ public_key.stdout }}"
     - "Short ID: {{ short_id.stdout }}"
-    - "UUID: {{ uuid.stdout }}"  
-# - name: Return server_ipv4 to registered var
-#   ansible.builtin.command: 'curl -s https://api.ipify.org'
-#   register: server_ipv4   
+    - "UUID: {{ uuid.stdout }}"   
 - name: Template for reality.json
   ansible.builtin.template:
     src: reality.json.jinja
