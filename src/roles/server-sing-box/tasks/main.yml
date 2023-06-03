@@ -39,10 +39,10 @@
   ansible.builtin.shell: '{{ singbox_path }}/sing-box generate reality-keypair'
   register: key_pair
 - name: Return private key to registered var
-  ansible.builtin.shell: echo {{ key_pair }} | awk "/PrivateKey/ {print $2}" | tr -d '"'
+  ansible.builtin.shell: echo {{ key_pair.stdout }} | awk "/PrivateKey/ {print $2}" | tr -d '"'
   register: private_key
 - name: Return public key to registered var
-  ansible.builtin.shell: echo {{ key_pair }} | awk "/PublicKey/ {print $2}" | tr -d '"'
+  ansible.builtin.shell: echo {{ key_pair.stdout }} | awk "/PublicKey/ {print $2}" | tr -d '"'
   register: public_key
 - name: Return UUID to registered var
   ansible.builtin.shell: '{{ singbox_path }}/sing-box generate uuid'
@@ -53,13 +53,13 @@
 - name: Print the server details
   ansible.builtin.debug:
     msg:
-    - "Server IP: {{ server_ip }}"
+    - "Server IP: {{ server_ipv4}}"
     - "Listen Port: {{ listen_port }}"
     - "Server Name: {{ server_name }}"
-    - "Private Key: {{ private_key }}"
-    - "Public Key: {{ public_key }}"
-    - "Short ID: {{ short_id }}"
-    - "UUID: {{ uuid }}"  
+    - "Private Key: {{ private_key.stdout }}"
+    - "Public Key: {{ public_key.stdout }}"
+    - "Short ID: {{ short_id.stdout }}"
+    - "UUID: {{ uuid.stdout }}"  
 # - name: Return server_ipv4 to registered var
 #   ansible.builtin.command: 'curl -s https://api.ipify.org'
 #   register: server_ipv4   
