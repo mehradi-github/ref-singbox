@@ -1,7 +1,9 @@
 ---
 # tasks file for server-sing-box
-- name: Desabling and stoping singbox.service
-  ansible.builtin.shell: systemctl disable --now singbox && systemctl daemon-reload
+- name: Stop service singbox, if started
+  ansible.builtin.service:
+    name: singbox
+    state: stopped
 - name: stat old_singbox_service
   stat: path={{ singbox_old_path }}
   register: old_singbox_service_stat  
@@ -83,7 +85,11 @@
     src: singbox.service.jinja
     dest: '/etc/systemd/system/singbox.service'
     mode: '0644'
-- name: Enabling and starting singbox.service
-  ansible.builtin.shell: systemctl daemon-reload && systemctl enable --now singbox
+- name: Start service singbox, if not started
+  ansible.builtin.service:
+    name: singbox
+    state: started    
+# - name: Enabling and starting singbox.service
+#   ansible.builtin.shell: systemctl daemon-reload && systemctl enable --now singbox
 
 
