@@ -29,13 +29,8 @@
   when: old_dir_stat.stat.exists
 - name: Changing mode singbox file
   ansible.builtin.file:
-    path: '{{ singbox_path }}/singbox'
+    path: '{{ singbox_path }}/sing-box'
     mode: '0755'
-- name: Template for reality.json
-  ansible.builtin.template:
-    src: reality.json.jinja
-    dest: '{{ singbox_path }}/reality.json'
-    mode: '0644'
 - name: Return key pair to registered var
   ansible.builtin.command: '{{ singbox_path }}/singbox generate reality-keypair'
   register: key_pair
@@ -54,6 +49,11 @@
 # - name: Return server_ipv4 to registered var
 #   ansible.builtin.command: 'curl -s https://api.ipify.org'
 #   register: server_ipv4   
+- name: Template for reality.json
+  ansible.builtin.template:
+    src: reality.json.jinja
+    dest: '{{ singbox_path }}/reality.json'
+    mode: '0644'
 - name: Template for singbox.service
   ansible.builtin.template:
     src: singbox.service.jinja
