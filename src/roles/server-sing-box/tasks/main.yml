@@ -1,5 +1,15 @@
 ---
 # tasks file for server-sing-box
+- name: Desabling and stoping singbox.service
+  ansible.builtin.shell: systemctl disable --now singbox && systemctl daemon-reload
+- name: stat old_singbox_service
+  stat: path={{ singbox_old_path }}
+  register: old_singbox_service_stat  
+- name: Remove singbox.service file (delete file)
+  ansible.builtin.file:
+    path: /etc/systemd/system/singbox.service
+    state: absent 
+  when: old_singbox_service_stat.stat.exists     
 - name: Remove old singbox's dir before installation
   ansible.builtin.command:
     cmd: rm -r ./singbox
@@ -39,10 +49,10 @@
   ansible.builtin.shell: '{{ singbox_path }}/sing-box generate reality-keypair'
   register: key_pair
 - name: Return private key to registered var
-  ansible.builtin.shell: echo {{ key_pair.stdout }} | awk "/PrivateKey/ {print $2}" | tr -d '"'
+  ansible.builtin.shell: echo {{ key_pair.stdout }} | awk '/PrivateKey/ {print $2}' | tr -d '"'
   register: private_key
 - name: Return public key to registered var
-  ansible.builtin.shell: echo {{ key_pair.stdout }} | awk "/PublicKey/ {print $2}" | tr -d '"'
+  ansible.builtin.shell: echo {{ key_pair.stdout }} | awk '/PublicKey/ {print $2}' | tr -d '"'
   register: public_key
 - name: Return UUID to registered var
   ansible.builtin.shell: '{{ singbox_path }}/sing-box generate uuid'
