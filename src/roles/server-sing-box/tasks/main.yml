@@ -32,19 +32,19 @@
     path: '{{ singbox_path }}/sing-box'
     mode: '0755'
 - name: Return key pair to registered var
-  ansible.builtin.command: '{{ singbox_path }}/singbox generate reality-keypair'
+  ansible.builtin.shell: '{{ singbox_path }}/singbox generate reality-keypair'
   register: key_pair
 - name: Return private key to registered var
-  ansible.builtin.command: echo {{ key_pair }} | awk "/PrivateKey/ {print $2}" | tr -d '"'
+  ansible.builtin.shell: echo {{ key_pair }} | awk "/PrivateKey/ {print $2}" | tr -d '"'
   register: private_key
 - name: Return public key to registered var
-  ansible.builtin.command: echo {{ key_pair }} | awk "/PublicKey/ {print $2}" | tr -d '"'
+  ansible.builtin.shell: echo {{ key_pair }} | awk "/PublicKey/ {print $2}" | tr -d '"'
   register: public_key
 - name: Return UUID to registered var
-  ansible.builtin.command: '{{ singbox_path }}/singbox generate uuid'
+  ansible.builtin.shell: '{{ singbox_path }}/singbox generate uuid'
   register: uuid   
 - name: Return short id to registered var
-  ansible.builtin.command: '{{ singbox_path }}/singbox generate rand --hex 8'
+  ansible.builtin.shell: '{{ singbox_path }}/singbox generate rand --hex 8'
   register: short_id    
 - name: Print the server details
   ansible.builtin.debug:
