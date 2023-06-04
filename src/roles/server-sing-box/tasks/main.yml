@@ -29,6 +29,7 @@
     name: 
     - curl
     - jq
+    - qrencode
     state: present
 - name: Fetch the latest (including pre-releases) release version number from GitHub API
   ansible.builtin.shell: 'curl -s "https://api.github.com/repos/SagerNet/sing-box/releases" | jq -r ".[0].name"'
@@ -68,17 +69,7 @@
   register: uuid   
 - name: Return short id to registered var
   ansible.builtin.shell: '{{ singbox_path }}/sing-box generate rand --hex 8'
-  register: short_id    
-- name: Print the server details
-  ansible.builtin.debug:
-    msg:
-    - "Server IP: {{ server_ipv4.stdout}}"
-    - "Listen Port: {{ listen_port }}"
-    - "Server Name: {{ server_name }}"
-    - "Private Key: {{ private_key.stdout }}"
-    - "Public Key: {{ public_key.stdout }}"
-    - "Short ID: {{ short_id.stdout }}"
-    - "UUID: {{ uuid.stdout }}"   
+  register: short_id  
 - name: Template for reality.json
   ansible.builtin.template:
     src: reality.json.jinja
@@ -99,8 +90,20 @@
     enabled: true  
 # - name: Enabling and starting singbox.service
 #   ansible.builtin.shell: systemctl daemon-reload && systemctl enable --now singbox
-
-- name: Print the server link
+- name: Generate qrcode
+  ansible.builtin.shell: 'echo "vless://{{ uuid.stdout }}@{{ server_ipv4.stdout }}:{{ listen_port }}?encryption=none&flow=xtls-rprx-vision&security=reality&sni={{ server_name }}&fp=chrome&pbk={{ public_key.stdout }}&sid={{ uuid.stdout }}&type=tcp&headerType=none#SING-BOX-TCP" | qrencode -m 2 -t utf8'
+  register: qrcode    
+- name: Print the server details
   ansible.builtin.debug:
     msg:
-    - "vless://{{ uuid.stdout }}@{{ server_ipv4.stdout}}:{{ listen_port }}?encryption=none&flow=xtls-rprx-vision&security=reality&sni={{ server_name }}&fp=chrome&pbk={{ public_key.stdout }}&sid={{ uuid.stdout }}&type=tcp&headerType=none#SING-BOX-TCP"
+    - "Server IP: {{ server_ipv4.stdout }}"
+    - "Listen Port: {{ listen_port }}"
+    - "Server Name: {{ server_name }}"
+    - "Private Key: {{ private_key.stdout }}"
+    - "Public Key: {{ public_key.stdout }}"
+    - "Short ID: {{ short_id.stdout }}"
+    - "UUID: {{ uuid.stdout }}"  
+    - "vless://{{ uuid.stdout }}@{{ server_ipv4.stdout }}:{{ listen_port }}?encryption=none&flow=xtls-rprx-vision&security=reality&sni={{ server_name }}&fp=chrome&pbk={{ public_key.stdout }}&sid={{ uuid.stdout }}&type=tcp&headerType=none#SING-BOX-TCP"
+    - "{{ qrcode.stdout_lines }}"
+
+    
