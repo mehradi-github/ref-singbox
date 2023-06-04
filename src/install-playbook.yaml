@@ -4,6 +4,7 @@
   gather_facts: true
   become: true
   roles:
+  - uninstall-sing-box
   - server-sing-box
   tags:
   - servers
@@ -12,6 +13,7 @@
   gather_facts: true
   become: true
   roles:
+  - uninstall-sing-box
   - client-sing-box
   tags:
   - clients
