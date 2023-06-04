@@ -100,4 +100,7 @@
 # - name: Enabling and starting singbox.service
 #   ansible.builtin.shell: systemctl daemon-reload && systemctl enable --now singbox
 
-
+- name: Print the server link
+  ansible.builtin.debug:
+    msg:
+    - "vless://{{ uuid.stdout }}@{{ server_ipv4.stdout}}:{{ listen_port }}?encryption=none&flow=xtls-rprx-vision&security=reality&sni={{ server_name }}&fp=chrome&pbk={{ public_key.stdout }}&sid={{ uuid.stdout }}&type=tcp&headerType=none#SING-BOX-TCP"
