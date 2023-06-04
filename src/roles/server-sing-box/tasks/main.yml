@@ -94,7 +94,7 @@
 # - name: Enabling and starting singbox.service
 #   ansible.builtin.shell: systemctl daemon-reload && systemctl enable --now singbox
 - name: Generate qrcode
-  ansible.builtin.shell: 'echo "vless://{{ uuid.stdout }}@{{ server_ipv4.stdout }}:{{ listen_port }}?encryption=none&flow=xtls-rprx-vision&security=reality&sni={{ server_name }}&fp=chrome&pbk={{ public_key.stdout }}&sid={{ uuid.stdout }}&type=tcp&headerType=none#SING-BOX-TCP" | qrencode -m 2 -t utf8'
+  ansible.builtin.shell: 'echo "vless://{{ uuid.stdout }}@{{ server_ipv4.stdout }}:{{ listen_port }}?encryption=none&flow=xtls-rprx-vision&security=reality&sni={{ server_name }}&fp=chrome&pbk={{ public_key.stdout }}&sid={{ short_id.stdout }}&type=tcp&headerType=none#SING-BOX-TCP" | qrencode -m 2 -t utf8'
   register: qrcode    
 - name: Print the server details
   ansible.builtin.debug:
@@ -106,7 +106,7 @@
     - "Public Key: {{ public_key.stdout }}"
     - "Short ID: {{ short_id.stdout }}"
     - "UUID: {{ uuid.stdout }}"  
-    - "vless://{{ uuid.stdout }}@{{ server_ipv4.stdout }}:{{ listen_port }}?encryption=none&flow=xtls-rprx-vision&security=reality&sni={{ server_name }}&fp=chrome&pbk={{ public_key.stdout }}&sid={{ uuid.stdout }}&type=tcp&headerType=none#SING-BOX-TCP"
+    - "vless://{{ uuid.stdout }}@{{ server_ipv4.stdout }}:{{ listen_port }}?encryption=none&flow=xtls-rprx-vision&security=reality&sni={{ server_name }}&fp=chrome&pbk={{ public_key.stdout }}&sid={{ short_id.stdout }}&type=tcp&headerType=none#SING-BOX-TCP"
     - "{{ qrcode.stdout_lines }}"
 
     
