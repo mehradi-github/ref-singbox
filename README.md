@@ -15,21 +15,17 @@ Ansible automates the management of remote systems and controls their desired st
 Ansible automates the management of remote systems and controls their desired state. [[Installing Ansible on Ubuntu](https://github.com/mehradi-github/ref-ansible#installing-ansible-on-ubuntu)]
 ### Adding hosts
 ```sh
+# Download project and cd to project dir
+
 vi ./src/hosts
 # Changing SERVER-IP,USER and PORT
 [servers]
 SERVER-IP ansible_user=USER ansible_port=PORT
-[clients]
-localhost
 ```
 ## Installing sing-box on Server
 
--k, --ask-pass: ask for connection password
-
--K, --ask-become-pass: ask for privilege escalation password
-
 ```sh
-vi /src/roles/server-sing-box/vars/main.yml
+vi ./src/roles/server-sing-box/vars/main.yml
 # Changing port and SNI
 listen_port: 443
 server_name: 'example.com'
@@ -38,9 +34,21 @@ cd ./src
 ansible-playbook ./install-playbook.yaml -t servers 
 
 ```
+-k, --ask-pass: ask for connection password
+
+-K, --ask-become-pass: ask for privilege escalation password
+
 
 ## Installing sing-box on Client
 ```sh
+vi /src/roles/server-sing-box/tasks/main.yml
+# Changing below vars based on server info
+server_ipv4: 'a'
+uuid: 'b'
+server_name: 'c'
+public_key: 'd'
+short_id: 'e'
+
 cd ./src
 ansible-playbook ./install-playbook.yaml -t clients
 
