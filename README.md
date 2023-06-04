@@ -5,25 +5,30 @@ Ansible automates the management of remote systems and controls their desired st
 
 
 - [Installing sing-box via Ansible](#installing-sing-box-via-ansible)
-  - [Installing Ansible](#installing-ansible)
-  - [Linux Server Installation](#linux-server-installation)
-  - [Linux Client Installation](#linux-client-installation)
-
-## Installing Ansible
+  - [Requirments](#requirments)
+    - [Installing Ansible](#installing-ansible)
+    - [Setting configuration](#setting-configuration)
+  - [Installing sing-box on Server](#installing-sing-box-on-server)
+  - [Installing sing-box on Client](#installing-sing-box-on-client)
+## Requirments
+### Installing Ansible
 Ansible automates the management of remote systems and controls their desired state. [[Installing Ansible on Ubuntu](https://github.com/mehradi-github/ref-ansible#installing-ansible-on-ubuntu)]
-## Linux Server Installation
+### Setting configuration
+## Installing sing-box on Server
 
 -k, --ask-pass: ask for connection password
 
 -K, --ask-become-pass: ask for privilege escalation password
 
 ```sh
+cd ./src
 ansible-playbook ./install-playbook.yaml -t servers 
 
 ```
 
-## Linux Client Installation
+## Installing sing-box on Client
 ```sh
+cd ./src
 ansible-playbook ./install-playbook.yaml -t clients
 
 ```
