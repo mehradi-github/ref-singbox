@@ -29,6 +29,11 @@ localhost
 -K, --ask-become-pass: ask for privilege escalation password
 
 ```sh
+vi /src/roles/server-sing-box/vars/main.yml
+# Changing port and SNI
+listen_port: 443
+server_name: 'example.com'
+
 cd ./src
 ansible-playbook ./install-playbook.yaml -t servers 
 
