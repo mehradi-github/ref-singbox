@@ -4,13 +4,13 @@ After=network.target nss-lookup.target
 
 [Service]
 User=root
-Group=root
+WorkingDirectory={{ singbox_path }}
 CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
 AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
 ExecStart={{ singbox_path }}/sing-box run -c {{ singbox_path }}/reality.json
+ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
 RestartSec=10
-RestartPreventExitStatus=23
 LimitNOFILE=infinity
 
 [Install]
