@@ -14,21 +14,21 @@
         "domain_strategy": "ipv4_only",
         "users": [
           {
-            "uuid": {{ uuid.stdout }},
+            "uuid": "{{ uuid.stdout }}",
             "flow": "xtls-rprx-vision"
           }
         ],
         "tls": {
           "enabled": true,
-          "server_name": {{ server_name }},
+          "server_name": "{{ server_name }}",
             "reality": {
             "enabled": true,
             "handshake": {
-              "server": {{ server_name }},
+              "server": "{{ server_name }}",
               "server_port": 443
             },
-            "private_key": {{ private_key.stdout }},
-            "short_id": [{{ short_id.stdout }}]
+            "private_key": "{{ private_key.stdout }}",
+            "short_id": ["{{ short_id.stdout }}"]
           }
         }
       }
