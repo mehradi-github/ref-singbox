@@ -41,7 +41,7 @@ ansible-playbook ./install-playbook.yaml -t servers
 
 ## Installing sing-box on Client
 ```sh
-vi /src/roles/server-sing-box/tasks/main.yml
+vi src/roles/client-sing-box/vars/main.yml
 # Changing below vars based on server info
 server_ipv4: 'a'
 uuid: 'b'
