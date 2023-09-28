@@ -1,0 +1,23 @@
+- name: Return server_ipv4 to registered var
+  ansible.builtin.shell: "curl -s https://api.ipify.org"
+  register: server_ipv4
+- name: Return key pair to registered var
+  ansible.builtin.shell: "{{ singbox_path }}/sing-box generate reality-keypair"
+  register: key_pair
+- name: Return private key to registered var
+  ansible.builtin.shell: echo "{{ key_pair.stdout }}" | awk '/PrivateKey/ {print $2}' | tr -d '"'
+  register: private_key
+- name: Return public key to registered var
+  ansible.builtin.shell: echo "{{ key_pair.stdout }}" | awk '/PublicKey/ {print $2}' | tr -d '"'
+  register: public_key
+- name: Return UUID to registered var
+  ansible.builtin.shell: "{{ singbox_path }}/sing-box generate uuid"
+  register: uuid
+- name: Return short id to registered var
+  ansible.builtin.shell: "{{ singbox_path }}/sing-box generate rand --hex 8"
+  register: short_id
+- name: Template for reality.json
+  ansible.builtin.template:
+    src: reality.json.jinja
+    dest: "{{ singbox_path }}/reality.json"
+    mode: "0644"
