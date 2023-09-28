@@ -1,112 +1,28 @@
 ---
-# tasks file for server-sing-box
-- name: get service facts
-  ansible.builtin.service_facts:
-- name: Stop service singbox, if started
-  ansible.builtin.systemd:
-    name: singbox.service
-    state: stopped
-    enabled: false  
-  when: ansible_facts.services["singbox.service"] is defined  
-- name: stat old_singbox_service
-  stat: path=/etc/systemd/system/singbox.service
-  register: old_singbox_service_stat   
-- name: Remove singbox.service file (delete file)
-  ansible.builtin.file:
-    path: /etc/systemd/system/singbox.service
-    state: absent 
-  when: old_singbox_service_stat.stat.exists     
-- name: stat old_singbox_dir
-  stat: path={{ singbox_parent_path }}/singbox
-  register: old_singbox_dir_stat  
-- name: Remove old singbox's dir before installation
-  ansible.builtin.command:
-    cmd: rm -r {{ singbox_parent_path }}/singbox
-  when: old_singbox_dir_stat.stat.exists  
-- name: Update apt repo and cache on all Debian/Ubuntu boxes
-  ansible.builtin.apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
-- name: Upgrade all packages on servers
-  ansible.builtin.apt: upgrade=dist force_apt_get=yes
-- name: Install curl, jq and qrencode
-  ansible.builtin.package:  
-    name: 
-    - curl
-    - jq
-    - qrencode
-    state: present
-- name: Fetch the latest (including pre-releases) release version number from GitHub API
-  ansible.builtin.shell: 'curl -s "https://api.github.com/repos/SagerNet/sing-box/releases" | jq -r ".[0].name"'
-  register: singbox_core_ver 
-- name: Print url sinbox download
-  ansible.builtin.debug:  
-    msg: '{{ singbox_core_url }}'
-- name: Extracting downloaded singbox
-  ansible.builtin.unarchive:
-    src: '{{ singbox_core_url }}'
-    dest: '{{ singbox_parent_path }}'
-    remote_src: yes 
-- name: stat old_dir
-  stat: path={{ singbox_old_path }}
-  register: old_dir_stat    
-- name: Rename singbox dir
-  ansible.builtin.command: 'mv {{ singbox_old_path }} {{ singbox_path }}'
-  when: old_dir_stat.stat.exists
-- name: Changing mode singbox file
-  ansible.builtin.file:
-    path: '{{ singbox_path }}/sing-box'
-    mode: '0755'
-- name: Return server_ipv4 to registered var
-  ansible.builtin.shell: 'curl -s https://api.ipify.org'
-  register: server_ipv4  
-- name: Return key pair to registered var
-  ansible.builtin.shell: '{{ singbox_path }}/sing-box generate reality-keypair'
-  register: key_pair
-- name: Return private key to registered var
-  ansible.builtin.shell: echo "{{ key_pair.stdout }}" | awk '/PrivateKey/ {print $2}' | tr -d '"'
-  register: private_key
-- name: Return public key to registered var
-  ansible.builtin.shell: echo "{{ key_pair.stdout }}" | awk '/PublicKey/ {print $2}' | tr -d '"'
-  register: public_key
-- name: Return UUID to registered var
-  ansible.builtin.shell: '{{ singbox_path }}/sing-box generate uuid'
-  register: uuid   
-- name: Return short id to registered var
-  ansible.builtin.shell: '{{ singbox_path }}/sing-box generate rand --hex 8'
-  register: short_id  
-- name: Template for reality.json
-  ansible.builtin.template:
-    src: reality.json.jinja
-    dest: '{{ singbox_path }}/reality.json'
-    mode: '0644'
-- name: Template for singbox.service
-  ansible.builtin.template:
-    src: singbox.service.jinja
-    dest: '/etc/systemd/system/singbox.service'
-    mode: '0644'
-- name: Just force systemd to reread configs (2.4 and above)
-  ansible.builtin.systemd:
-    daemon_reload: true    
-- name: Start service singbox, if not started
-  ansible.builtin.systemd:
-    name: singbox.service
-    state: started  
-    enabled: true  
-# - name: Enabling and starting singbox.service
-#   ansible.builtin.shell: systemctl daemon-reload && systemctl enable --now singbox
-- name: Generate qrcode
-  ansible.builtin.shell: 'echo "vless://{{ uuid.stdout }}@{{ server_ipv4.stdout }}:{{ listen_port }}?encryption=none&flow=xtls-rprx-vision&security=reality&sni={{ server_name }}&fp=chrome&pbk={{ public_key.stdout }}&sid={{ short_id.stdout }}&type=tcp&headerType=none#SING-BOX-TCP" | qrencode -m 2 -t utf8'
-  register: qrcode    
-- name: Print the server details
-  ansible.builtin.debug:
-    msg:
-    - "Server IP: {{ server_ipv4.stdout }}"
-    - "Listen Port: {{ listen_port }}"
-    - "Server Name: {{ server_name }}"
-    - "Private Key: {{ private_key.stdout }}"
-    - "Public Key: {{ public_key.stdout }}"
-    - "Short ID: {{ short_id.stdout }}"
-    - "UUID: {{ uuid.stdout }}"  
-    - "vless://{{ uuid.stdout }}@{{ server_ipv4.stdout }}:{{ listen_port }}?encryption=none&flow=xtls-rprx-vision&security=reality&sni={{ server_name }}&fp=chrome&pbk={{ public_key.stdout }}&sid={{ short_id.stdout }}&type=tcp&headerType=none#SING-BOX-TCP"
-    - "{{ qrcode.stdout_lines }}"
+# tasks file for install-singbox
+- name: check ping
+  ansible.builtin.ping:
 
-    
+- name: Remove old singbox
+  import_tasks: remove-singbox.yml
+  when: true
+
+- name: Upgrade all packages on servers
+  import_tasks: upgrade.yml
+  when: true
+
+- name: Download singbox
+  import_tasks: download-singbox.yml
+  when: true
+
+- name: Config singbox
+  import_tasks: config-singbox.yml
+  when: true
+
+- name: Start service singbox
+  import_tasks: service-singbox.yml
+  when: true
+
+- name: Generate qrcode
+  import_tasks: qrcode-singbox.yml
+  when: true
