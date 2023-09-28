@@ -1,0 +1,13 @@
+- name: Template for singbox.service
+  ansible.builtin.template:
+    src: singbox.service.jinja
+    dest: "/etc/systemd/system/singbox.service"
+    mode: "0644"
+- name: Just force systemd to reread configs (2.4 and above)
+  ansible.builtin.systemd:
+    daemon_reload: true
+- name: Start service singbox, if not started
+  ansible.builtin.systemd:
+    name: singbox.service
+    state: started
+    enabled: true

@@ -1,0 +1,15 @@
+- name: Generate qrcode
+  ansible.builtin.shell: 'echo "vless://{{ uuid.stdout }}@{{ server_ipv4.stdout }}:{{ listen_port }}?encryption=none&flow=xtls-rprx-vision&security=reality&sni={{ server_name }}&fp=chrome&pbk={{ public_key.stdout }}&sid={{ short_id.stdout }}&type=tcp&headerType=none#SING-BOX-TCP" | qrencode -m 2 -t utf8'
+  register: qrcode
+- name: Print the server details
+  ansible.builtin.debug:
+    msg:
+      - "Server IP: {{ server_ipv4.stdout }}"
+      - "Listen Port: {{ listen_port }}"
+      - "Server Name: {{ server_name }}"
+      - "Private Key: {{ private_key.stdout }}"
+      - "Public Key: {{ public_key.stdout }}"
+      - "Short ID: {{ short_id.stdout }}"
+      - "UUID: {{ uuid.stdout }}"
+      - "vless://{{ uuid.stdout }}@{{ server_ipv4.stdout }}:{{ listen_port }}?encryption=none&flow=xtls-rprx-vision&security=reality&sni={{ server_name }}&fp=chrome&pbk={{ public_key.stdout }}&sid={{ short_id.stdout }}&type=tcp&headerType=none#SING-BOX-TCP"
+      - "{{ qrcode.stdout_lines }}"

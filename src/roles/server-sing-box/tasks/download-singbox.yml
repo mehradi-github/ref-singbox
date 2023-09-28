@@ -1,0 +1,21 @@
+- name: Fetch the latest (including pre-releases) release version number from GitHub API
+  ansible.builtin.shell: 'curl -s "https://api.github.com/repos/SagerNet/sing-box/releases" | jq -r ".[0].name"'
+  register: singbox_core_ver
+- name: Print url sinbox download
+  ansible.builtin.debug:
+    msg: "{{ singbox_core_url }}"
+- name: Extracting downloaded singbox
+  ansible.builtin.unarchive:
+    src: "{{ singbox_core_url }}"
+    dest: "{{ singbox_parent_path }}"
+    remote_src: yes
+- name: stat old_dir
+  stat: path={{ singbox_old_path }}
+  register: old_dir_stat
+- name: Rename singbox dir
+  ansible.builtin.command: "mv {{ singbox_old_path }} {{ singbox_path }}"
+  when: old_dir_stat.stat.exists
+- name: Changing mode singbox file
+  ansible.builtin.file:
+    path: "{{ singbox_path }}/sing-box"
+    mode: "0755"
