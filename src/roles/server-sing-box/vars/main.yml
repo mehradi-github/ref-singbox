@@ -1,13 +1,14 @@
 ---
 # Changing port and SNI
-listen_port: 8443
-server_name: "example.com"
+listen_port: 443
+server_name: 'example.com'
 
 singbox_parent_path: /usr/local/bin
-singbox_old_path: "{{ singbox_parent_path }}/sing-box-{{ singbox_core_ver.stdout }}-{{ singbox_core_name }}"
-singbox_path: "{{ singbox_parent_path }}/singbox"
+singbox_old_path: '{{ singbox_parent_path }}/sing-box-{{ singbox_core_ver.stdout }}-{{ singbox_core_name }}'
+singbox_path: '{{ singbox_parent_path }}/singbox'
 # singbox_core_name: {{ {"x86_64": "linux-amd64", "aarch64": "android-arm64", "armv7l": "android-armv7"}[ansible_architecture] | default("") }}
 #server_ipv4: '{{ ansible_default_ipv4.address }}'
-singbox_core_name: "linux-amd64"
-# singbox_core_url: 'https://github.com/SagerNet/sing-box/releases/download/v{{ singbox_core_ver.stdout }}/sing-box-{{ singbox_core_ver.stdout }}-{{ singbox_core_name }}.tar.gz'
+singbox_core_name: linux-amd64 
+singbox_core_url: 'https://github.com/SagerNet/sing-box/releases/download/v{{ singbox_core_ver.stdout }}/sing-box-{{ singbox_core_ver.stdout }}-{{ singbox_core_name }}.tar.gz'
+
 
