@@ -1,12 +1,15 @@
 - name: Fetch the latest (including pre-releases) release version number from GitHub API
-  ansible.builtin.shell: 'curl -s "https://api.github.com/repos/SagerNet/sing-box/releases" | jq -r ".[0].name"'
+  ansible.builtin.shell: 'curl -s "https://api.github.com/repos/SagerNet/sing-box/releases/latest" | jq -r ".name"'
   register: singbox_core_ver
+- name: Fetch the latest (including pre-releases) release version number from GitHub API
+  ansible.builtin.shell: 'curl -s "https://api.github.com/repos/SagerNet/sing-box/releases/latest" | jq -r ".assets[] | select (.name|test("linux-amd64.tar.gz")) | .browser_download_url"'
+  register: singbox_core_url
 - name: Print url sinbox download
   ansible.builtin.debug:
-    msg: "{{ singbox_core_url }}"
+    msg: "{{ singbox_core_url.stdout }}"
 - name: Extracting downloaded singbox
   ansible.builtin.unarchive:
-    src: "{{ singbox_core_url }}"
+    src: "{{ singbox_core_url.stdout }}"
     dest: "{{ singbox_parent_path }}"
     remote_src: yes
 - name: stat old_dir
