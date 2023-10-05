@@ -1,5 +1,5 @@
-- name: Fetch the latest (including pre-releases) release version number from GitHub API
-  ansible.builtin.shell: 'curl -s "https://api.github.com/repos/SagerNet/sing-box/releases" | jq -r ".[0].name"'
+- name: Fetch the latest release version number from GitHub API
+  ansible.builtin.shell: 'curl -s "https://api.github.com/repos/SagerNet/sing-box/releases/latest" | jq -r ".name"'
   register: singbox_core_ver
 - name: Print url sinbox download
   ansible.builtin.debug:
