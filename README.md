@@ -49,6 +49,7 @@ server_name: 'example.com'
 cd ./src
 ansible-playbook ./install-playbook.yaml -t servers
 
+ansible-playbook -i ./hosts ./install-playbook.yaml -t servers -K
 ```
 
 -k, --ask-pass: ask for connection password
