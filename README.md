@@ -47,7 +47,7 @@ listen_port: 443
 server_name: 'example.com'
 
 cd ./src
-ansible-playbook ./install-playbook.yaml -t servers
+ansible-playbook -i ./hosts ./install-playbook.yaml -t servers
 
 ```
 
