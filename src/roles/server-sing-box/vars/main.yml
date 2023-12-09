@@ -2,6 +2,7 @@
 # Changing port and SNI
 listen_port: 443
 server_name: "example.com"
+run_unnecessary_task: fasle
 
 singbox_parent_path: /usr/local/bin
 singbox_old_path: "{{ singbox_parent_path }}/sing-box-{{ singbox_core_ver.stdout }}-{{ singbox_core_name }}"
