@@ -2,10 +2,11 @@
 # tasks file for install-singbox
 - name: check ping
   ansible.builtin.ping:
+  when: false
 
 - name: Remove old singbox
   import_tasks: remove-singbox.yml
-  when: true
+  when: run_unnecessary_task
 
 - name: Upgrade all packages on servers
   import_tasks: upgrade.yml
